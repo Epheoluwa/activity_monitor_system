@@ -13,4 +13,9 @@ class MainController extends Controller
         $user = Auth::user();
         return view('pages.index', compact('user'));
     }
+
+    public function Calender()
+    {
+        
+    }
 }
