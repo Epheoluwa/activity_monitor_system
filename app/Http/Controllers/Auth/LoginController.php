@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -18,11 +19,18 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required', 'min:8'],
         ]);
+
         if ($validator->fails()) {
-            return redirect()->route('login')->with('error', $validator->errors()->first());
-       
+            return back()->with('error', $validator->errors()->first());
         }
 
-        // Auth::attempt($credentials)
+        $credentials = $request->only('email', 'password');
+
+        if(Auth::attempt($credentials))
+        {
+            return redirect()->route('/')->with('success', 'Login successful');
+        }else{
+            return back()->with('error', 'Invalid credentials');
+        }
     }
 }
