@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class ActivityController extends Controller
 {
+
+    //save activity
     public function postactivity(Request $request)
     {
 
@@ -49,6 +53,73 @@ class ActivityController extends Controller
         ];
         $save = Activity::create($data);
         if ($save) {
+            return response()->json(['success' => true, 'data' => $save], 200);
+        } else {
+            return response()->json(['success' => false], 500);
+        }
+    }
+
+    //fetch activity
+    public function getactivity(Request $request)
+    {
+        $start =  $request->start;
+        $end =  $request->end;
+        $activities = Activity::whereBetween('date', [$start, $end])->get();
+
+        $formattedActivities = [];
+
+        foreach ($activities as $activity) {
+            $formattedActivities[] = [
+                'id' => $activity->id,
+                'title' => $activity->title,
+                'desc' => $activity->description,
+                'image' => $activity->image,
+                'start' => $activity->date,
+                'allDay' => true,
+            ];
+        }
+        return response()->json($formattedActivities);
+    }
+
+    //update activity 
+    public function editactivity(Request $request, $id)
+    {
+
+        $activity = Activity::find($id);
+        if ($request->hasFile('image')) {
+            $path = 'Images/activity/' . $activity->image;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('Images/activity/', $filename);
+            $activity->image = $filename;
+        }
+
+        $activity->title =  $request->editActivityTitle;
+        $activity->description = $request->editActivityDesc;
+        $update = $activity->save();
+        if ($update) {
+            return response()->json(['success' => true, 'data' => $activity], 200);
+        } else {
+            return response()->json(['success' => false], 500);
+        }
+    }
+
+    //delete activity
+    public function deleteactivity($id)
+    {
+        $activity = Activity::find($id);
+        if ($activity->image) {
+            $path = 'Images/activity/' . $activity->image;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+        }
+        $deleted =  $activity->delete();
+        if ($deleted) {
             return response()->json(['success' => true], 200);
         } else {
             return response()->json(['success' => false], 500);

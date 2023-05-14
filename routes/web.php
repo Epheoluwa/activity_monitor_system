@@ -26,5 +26,8 @@ Route::middleware(['auth'])->group(function(){
  });
 
 Route::middleware(['auth', 'isAdmin'])->group(function(){
-    Route::post('/saveactivity', [ActivityController::class, 'postactivity']);
+    Route::post('saveactivity', [ActivityController::class, 'postactivity']);
+    Route::get('getactivity', [ActivityController::class, 'getactivity']);
+    Route::put('editactivity/{id}', [ActivityController::class, 'editactivity']);
+    Route::get('deleteactivity/{id}', [ActivityController::class, 'deleteactivity']);
  });
