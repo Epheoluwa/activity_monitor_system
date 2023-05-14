@@ -14,7 +14,7 @@
 
            <!-- Nav Item - Dashboard -->
            <li class="nav-item active">
-               <a class="nav-link" href="index.html">
+               <a class="nav-link"  href="{{ url('/') }}">
                    <i class="fas fa-fw fa-tachometer-alt"></i>
                    <span>Dashboard</span></a>
            </li>
@@ -24,9 +24,9 @@
 
            <!-- Nav Item - Dashboard -->
            <li class="nav-item active">
-               <a class="nav-link" href="index.html">
+               <a class="nav-link" href="{{ url('users') }}">
                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                   <span>Dashboard</span></a>
+                   <span>User</span></a>
            </li>
        </ul>
        <!-- End of Sidebar -->

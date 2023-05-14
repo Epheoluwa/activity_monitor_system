@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\MainController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('getactivity', [ActivityController::class, 'getactivity']);
     Route::put('editactivity/{id}', [ActivityController::class, 'editactivity']);
     Route::get('deleteactivity/{id}', [ActivityController::class, 'deleteactivity']);
+    Route::get('users', [UsersController::class, 'index']);
+    Route::get('users-activity/{id}', [UsersController::class, 'usersActivity']);
  });
