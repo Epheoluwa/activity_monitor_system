@@ -16,20 +16,22 @@
                     </thead>
                     <tbody>
                         <?php $sn = 0; ?>
-
+                        @foreach($users as $user)
                         <tr class="warning">
                             <td><?= ++$sn ?></td>
                             <td>
-
+                                {{ $user->name }}
                             </td>
                             <td>
+                            {{ $user->email }}
                             </td>
                             <td>
-                                <a class="btn btn-info mb-3 text-white" style="cursor:pointer" href="{{ url('users-activity/1') }}">
+                                <a class="btn btn-info mb-3 text-white" style="cursor:pointer" href="{{ url('users-activity', $user->id) }}">
                                     View User Activities
                                 </a>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
 
                 </table>

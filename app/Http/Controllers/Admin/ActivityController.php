@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\User;
+use App\Models\UserActivity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -53,6 +55,16 @@ class ActivityController extends Controller
         ];
         $save = Activity::create($data);
         if ($save) {
+            //adding each activity for each user
+            $users = User::where('role', '!=', 1)->get();
+            foreach ($users as $user) {
+                $data = [
+                    'user_id' => $user['id'],
+                    'activity_id' => $save->id,
+                ];
+                UserActivity::create($data);
+            }
+
             return response()->json(['success' => true, 'data' => $save], 200);
         } else {
             return response()->json(['success' => false], 500);
@@ -120,6 +132,7 @@ class ActivityController extends Controller
         }
         $deleted =  $activity->delete();
         if ($deleted) {
+            UserActivity::where('activity_id', $id)->delete();
             return response()->json(['success' => true], 200);
         } else {
             return response()->json(['success' => false], 500);
