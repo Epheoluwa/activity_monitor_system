@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class UserMainActivity extends Model
 {
@@ -17,8 +18,10 @@ class UserMainActivity extends Model
         'date',
     ];
 
-    public function user()
+   
+
+    public function userActivities()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(UserActivity::class, 'user_id', 'user_id');
     }
 }

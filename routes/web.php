@@ -34,4 +34,5 @@ Route::middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('users', [UsersController::class, 'index']);
     Route::get('users-activity/{id}', [UsersController::class, 'usersActivity']);
     Route::post('users-activity-post', [UsersController::class, 'usersActivityPost']);
+    Route::post('users-activity-edit/{id}', [UsersController::class, 'usersActivityEdit']);
  });

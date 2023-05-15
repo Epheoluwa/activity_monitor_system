@@ -18,13 +18,15 @@ class UserActivity extends Model
         'date',
         'edited',
     ];
+    
 
-    public function user()
+    public function userMainActivity()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(UserMainActivity::class, 'user_id', 'user_id');
     }
+
     public function activity()
     {
-        return $this->belongsTo(Activity::class);
+        return $this->belongsTo(Activity::class, 'activity_id', 'id');
     }
 }
