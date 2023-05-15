@@ -21,10 +21,10 @@ class UserActivity extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id','id');
+        return $this->belongsTo(User::class);
     }
     public function activity()
     {
-        return $this->belongsTo(Activity::class, 'activity_id','id');
+        return $this->belongsTo(Activity::class);
     }
 }

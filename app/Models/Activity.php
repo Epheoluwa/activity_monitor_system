@@ -15,4 +15,9 @@ class Activity extends Model
         'image',
         'date'
     ];
+
+    public function userActivities()
+    {
+        return $this->hasMany(UserActivity::class);
+    }
 }

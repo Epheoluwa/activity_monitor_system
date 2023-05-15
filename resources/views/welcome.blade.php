@@ -13,6 +13,7 @@
             <!-- Main Content -->
             <div id="content">
                 @include('layouts.topnav')
+                @include('utils.alert')
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     @yield('content')

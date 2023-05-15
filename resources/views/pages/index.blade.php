@@ -25,7 +25,8 @@
 <div class="modal fade" id="addActivity" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="add_activity" enctype="multipart/form-data" method="post">
+            <form id="add_activity" enctype="multipart/form-data"  method="post">
+          
                 <div class="modal-body">
                     <h4>Add New Activity</h4>
                     <div class="">
@@ -39,7 +40,6 @@
                     <div class="mt-2">
                         <label>Image</label>
                         <input type="file" name="activityImage" id="activityImage" class="form-control">
-
                     </div>
                 </div>
 

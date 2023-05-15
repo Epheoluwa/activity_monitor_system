@@ -9,7 +9,7 @@ use App\Models\UserActivity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Validation\ValidationController;
 
 class ActivityController extends Controller
 {
@@ -18,25 +18,11 @@ class ActivityController extends Controller
     public function postactivity(Request $request)
     {
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'activityTitle' => 'required',
-                'activityDesc' => 'required',
-                'activityImage' => 'required',
-                'date' => 'required|date_format:Y-m-d',
-            ],
-            [
-                'activityTitle.required' => 'Please enter a title for the activity',
-                'activityDesc.required' => 'Please enter a description for the activity',
-                'activityImage.required' => 'Please select an image for the activity',
-                'date.required' => 'Please select a date for the activity',
-                'date.date_format' => 'Please enter a valid date format (YYYY-MM-DD)',
-            ]
-        );
-
+        $validationController = new ValidationController();
+        $validator = $validationController->validateActivity($request);
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 400);
+            return back()->with('error', $validator->errors()->first());
+            
         }
 
         if ($request->hasFile('activityImage')) {

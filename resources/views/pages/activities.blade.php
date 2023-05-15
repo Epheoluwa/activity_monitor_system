@@ -97,24 +97,26 @@
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="add_activity" enctype="multipart/form-data" method="post">
+            <form id="add_activity" enctype="multipart/form-data" method="post" action="{{url('users-activity-post')}}">
+                {{ csrf_field() }}
                 <div class="modal-body">
                     <h4>Add New User Activity</h4>
                     <div class="mt-2">
                         <label>Title</label>
-                        <input type="text" name="activityTitle" id="activityTitle" class="form-control">
+                        <input type="text" name="activityTitle" id="activityTitle" class="form-control" required>
+                        <input type="hidden" name="user_id" id="user_id" value="{{$user_id}}" class="form-control" required>
                     </div>
                     <div class="mt-2">
                         <label>Description</label>
-                        <textarea name="activityDesc" id="activityDesc" class="form-control"></textarea>
+                        <textarea name="activityDesc" id="activityDesc" class="form-control" required></textarea>
                     </div>
                     <div class="mt-2">
                         <label>Image</label>
-                        <input type="file" name="activityImage" id="activityImage" class="form-control">
+                        <input type="file" name="activityImage" id="activityImage" class="form-control" required>
                     </div>
                     <div class="mt-2">
                         <label>Date</label>
-                        <input type="date" name="activityDate" id="activityDate" class="form-control">
+                        <input type="date" name="date" id="date" min="{{date('Y-m-d')}}" class="form-control" required>
                     </div>
                 </div>
 

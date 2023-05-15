@@ -16,4 +16,9 @@ class UserMainActivity extends Model
         'image',
         'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
