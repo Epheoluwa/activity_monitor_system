@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Show the modal
             $('#addActivity').modal('show');
+            $('#imagePreview2').css('display', 'none');
             $('#activityTitle').val('');
             $('#activityDesc').val('');
             $('#activityImage').val('');
@@ -167,8 +168,9 @@ function displayMessage(message) {
     alert(message);
 }
 
+
+//function to preview image
 function previewImage(event, id) {
-    console.log(id);
     var input = event.target;
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -180,3 +182,4 @@ function previewImage(event, id) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
