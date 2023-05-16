@@ -24,6 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [RegisterController::class, 'RegisterUser']);
 Route::post('loginUser', [LoginController::class, 'LoginUser']);
 
-Route::middleware(['auth.bearer'])->group(function () {
+Route::middleware(['auth.bearer', 'auth:sanctum'])->group(function () {
     Route::get('/activities', [ActivityController::class, 'getActivities']);
 });

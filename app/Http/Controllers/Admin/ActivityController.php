@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Validation\ValidationController;
+use App\Models\UserMainActivity;
+use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
 {
@@ -22,7 +24,6 @@ class ActivityController extends Controller
         $validator = $validationController->validateActivity($request);
         if ($validator->fails()) {
             return back()->with('error', $validator->errors()->first());
-            
         }
 
         if ($request->hasFile('activityImage')) {
@@ -127,8 +128,30 @@ class ActivityController extends Controller
 
 
     //get activities for users by dates differences
-    public function getActivities()
+    public function getActivities(Request $request)
     {
-       echo 'here';
+        // Get the logged-in user
+        $user = Auth::user()->id;
+        $start = Carbon::parse($request->start)->format('Y-m-d');
+        $end = Carbon::parse($request->end)->format('Y-m-d');
+
+        $activitiesData = [];
+        $activitiesData['userActivities'] = UserMainActivity::where('user_id', $user)->whereBetween('date', [$start, $end])->get();
+        $GlobalAct = UserActivity::where('user_id', $user)
+            ->with(['activity' => function ($query) use ($start, $end) {
+                $query->whereBetween('date', [$start, $end]);
+            }])
+            ->get();
+
+        foreach ($GlobalAct as $glo) {
+            if ($glo->activity != null) {
+                $activitiesData['globalActivities'][] = $glo->activity;
+            }
+        }
+
+        return response()->json([
+            'status' => 201,
+            'activities' => $activitiesData,
+        ], 201);
     }
 }
