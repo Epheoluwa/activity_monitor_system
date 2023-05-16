@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\User;
+use App\Models\UserActivity;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,21 +31,36 @@ class RegisterController extends Controller
             'role' => 2,
             'email' => $request->email,
             'name' => $request->name,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make( $request->password),
 
         ];
-        $save =  User::create($data);
-        if ($save) {
+
+        try {
+            $save =  User::create($data);
+            $token = $save->createToken('api')->plainTextToken;
+
+            if ($save) {
+                $activity = Activity::all();
+                foreach ($activity as $act) {
+                    $data = [
+                        'user_id' => $save->id,
+                        'activity_id' => $act['id'],
+                    ];
+                    UserActivity::create($data);
+                }
+
+                return new JsonResponse([
+                    'status' => 201,
+                    'Message' => 'New user created successfully',
+                    'user' => $save,
+                    'token' => $token,
+                ], 201);
+            }
+        } catch (\Exception $e) {
             return new JsonResponse([
-                'status' => 201,
-                'Message' => 'New user created successfully'
-            ], 201);
-        }else{
-            return new JsonResponse([
-                'status' => 200,
-                'Message' => 'Something went wrong, Please try again'
-            ], 200);
+                'status' => 400,
+                'Message' => $e
+            ], 400);
         }
-       
     }
 }
