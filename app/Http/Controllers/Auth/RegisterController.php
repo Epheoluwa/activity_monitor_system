@@ -13,54 +13,55 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    public function RegisterUser(Request $request)
+    public function registerUser(Request $request)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'min:8'],
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
         ]);
-        if ($validate->fails()) {
+
+        if ($validator->fails()) {
             return new JsonResponse([
-                'status' => 400,
-                'Message' => $validate->errors()->first()
-            ], 400);
+                'status' => 422,
+                'message' => $validator->errors()->first()
+            ], 422);
         }
 
-        $data = [
+        $userData = [
             'role' => 2,
             'email' => $request->email,
             'name' => $request->name,
-            'password' => Hash::make( $request->password),
-
+            'password' => Hash::make($request->password),
         ];
 
         try {
-            $save =  User::create($data);
-            $token = $save->createToken('api')->plainTextToken;
+            $user = User::create($userData);
+            $token = $user->createToken('api')->plainTextToken;
 
-            if ($save) {
-                $activity = Activity::all();
-                foreach ($activity as $act) {
-                    $data = [
-                        'user_id' => $save->id,
-                        'activity_id' => $act['id'],
+            if ($user) {
+                $activities = Activity::all();
+
+                foreach ($activities as $activity) {
+                    $userActivityData = [
+                        'user_id' => $user->id,
+                        'activity_id' => $activity->id,
                     ];
-                    UserActivity::create($data);
+                    UserActivity::create($userActivityData);
                 }
 
                 return new JsonResponse([
                     'status' => 201,
-                    'Message' => 'New user created successfully',
-                    'user' => $save,
+                    'message' => 'New user created successfully',
+                    'user' => $user,
                     'token' => $token,
                 ], 201);
             }
         } catch (\Exception $e) {
             return new JsonResponse([
-                'status' => 400,
-                'Message' => $e
-            ], 400);
+                'status' => 500,
+                'message' => 'Error while creating user',
+            ], 500);
         }
     }
 }

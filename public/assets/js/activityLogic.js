@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             $('#addActivity').modal('hide');
                             displayMessage("Activity Created Successfully");
                         },
-                        400: function (jqXHR, textStatus, errorThrown) {
+                        400: function (jqXHR) {
                             $('#add_activity button[type="submit"]').attr('disabled', false);
-                            displayMessage(jqXHR.responseJSON.errors.date || jqXHR.responseJSON.errors.activityDesc || jqXHR.responseJSON.errors.activityImage || jqXHR.responseJSON.errors.activityTitle);
+                            displayMessage(jqXHR.responseJSON); // Display the error message from the response
                         },
                         500: function () {
                             $('#add_activity button[type="submit"]').attr('disabled', false);

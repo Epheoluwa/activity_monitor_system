@@ -17,15 +17,14 @@ class ActivityController extends Controller
 {
 
     //save activity
-    public function postactivity(Request $request)
+    public function postactivity(Request $request, ValidationController $validationController)
     {
-
-        $validationController = new ValidationController();
+      
         $validator = $validationController->validateActivity($request);
-        if ($validator->fails()) {
-            return back()->with('error', $validator->errors()->first());
+         if ($validator->fails()) {
+            return response()->json($validator->errors()->first(),400);
         }
-
+  
         if ($request->hasFile('activityImage')) {
             $file = $request->file('activityImage');
             $ext = $file->getClientOriginalExtension();

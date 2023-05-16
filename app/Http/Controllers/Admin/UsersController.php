@@ -32,12 +32,11 @@ class UsersController extends Controller
     }
 
     //Save new  user activity
-    public function usersActivityPost(Request $request)
+    public function usersActivityPost(Request $request, ValidationController $validationController)
     {
-        $validationController = new ValidationController();
         $validator = $validationController->validateActivity($request);
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 400);
+            return response()->json(['errors' => $validator->errors()], 400);
         }
 
         if ($request->hasFile('activityImage')) {
