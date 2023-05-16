@@ -18,15 +18,16 @@
                    <i class="fas fa-fw fa-tachometer-alt"></i>
                    <span>Dashboard</span></a>
            </li>
+           @if(Auth::user()->role == 1)
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-           <!-- Divider -->
-           <hr class="sidebar-divider">
-
-           <!-- Nav Item - Dashboard -->
-           <li class="nav-item active">
-               <a class="nav-link" href="{{ url('users') }}">
-                   <i class="fas fa-fw fa-tachometer-alt"></i>
-                   <span>User</span></a>
-           </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url('users') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>User</span></a>
+            </li>
+           @endif
        </ul>
        <!-- End of Sidebar -->

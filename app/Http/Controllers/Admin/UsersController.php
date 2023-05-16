@@ -26,11 +26,7 @@ class UsersController extends Controller
     {
         $activitiesData = [];
         $activitiesData['userActivities'] = UserMainActivity::where('user_id', $id)->get();
-        $activitiesData['globalActivities'] = UserActivity::where('user_id', $id)->with('activity')
-            ->get();
-
-
-
+        $activitiesData['globalActivities'] = UserActivity::where('user_id', $id)->with('activity')->get();
         $user_id = ['user_id' => $id];
         return view('pages.activities',  compact('activitiesData', 'user_id'));
     }
