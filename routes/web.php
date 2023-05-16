@@ -35,4 +35,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('users-activity/{id}', [UsersController::class, 'usersActivity']);
     Route::post('users-activity-post', [UsersController::class, 'usersActivityPost']);
     Route::post('users-activity-edit/{id}', [UsersController::class, 'usersActivityEdit']);
+    Route::post('users-activity-edit-global/{id}', [UsersController::class, 'usersActivityEditGlobal']);
+    Route::delete('delete-user-activity/{id}', [UsersController::class, 'deleteUserActivity']);
+    Route::delete('delete-user-activity-global/{id}', [UsersController::class, 'deleteUserActivityGlobal']);
  });

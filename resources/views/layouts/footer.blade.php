@@ -14,3 +14,6 @@
     <!-- Page level custom scripts -->
     <script src="{{asset('assets/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{asset('assets/js/demo/chart-pie-demo.js')}}"></script>
+
+        <!-- Activity Logic-->
+        <script src="{{asset('assets/js/activityLogic.js')}}"></script>

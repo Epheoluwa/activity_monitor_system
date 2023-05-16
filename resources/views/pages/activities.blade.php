@@ -4,10 +4,18 @@
 <div class="container-fluid">
     <div class="card mb-3">
         <div class="card-body">
-            <a class="btn btn-primary mb-3 text-white" style="cursor:pointer" data-toggle="modal" data-target="#createModal">
-                <span class="fa fa-plus"></span>
-                Add New User Activity
-            </a>
+            <div class="d-flex justify-content-between">
+                <a class="btn btn-secondary mb-3 text-white" style="cursor:pointer" href="{{ url('users') }}">
+                    <span class="fa fa-arrow-left" aria-hidden="true"></span>
+                    All Users
+                </a>
+                <a class="btn btn-primary mb-3 text-white" style="cursor:pointer" data-toggle="modal" data-target="#createModal">
+                    <span class="fa fa-plus"></span>
+                    Add New User Activity
+                </a>
+            </div>
+
+
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -41,8 +49,11 @@
                                     </button>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item btn-sm" style="cursor:pointer" data-toggle="modal" data-target="#editModal{{$data->id}}"> <i class="fas fa-edit"></i> Edit Activity</a>
-
-                                        <a class="dropdown-item btn-sm" style="cursor:pointer; background: red; color: white;" id="pay" type="submit"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                        <form action="{{ url('delete-user-activity', $data->id) }}" method="post"  onsubmit="return confirm('Are you sure you want to delete this item?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dropdown-item btn-sm" style="cursor:pointer; background: red; color: white;"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                                        </form>
                                     </div>
                                 </div>
                                 <!-- Edit modal -->
@@ -72,12 +83,19 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item btn-sm" style="cursor:pointer" data-toggle="modal" data-target="#editModal{{$data->activity->id}}"> <i class="fas fa-edit"></i> Edit Activity</a>
 
-                                        <a class="dropdown-item btn-sm" style="cursor:pointer; background: red; color: white;" id="pay" type="submit"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                        <form action="{{ url('delete-user-activity-global', $data->activity->id) }}" method="post"  onsubmit="return confirm('Are you sure you want to delete this item?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="user_id" value="{{$user_id['user_id']}}">
+                                            <button type="submit" class="dropdown-item btn-sm" style="cursor:pointer; background: red; color: white;"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                                        </form>
+<!-- 
+                                        <a class="dropdown-item btn-sm" style="cursor:pointer; background: red; color: white;" href="{{ url('delete-user-activity-global', $data->id, $user_id['user_id']) }}"> <i class="fa fa-trash" aria-hidden="true"></i> Delete</a> -->
 
                                     </div>
                                 </div>
-                                 <!-- Edit modal -->
-                                 @include('utils.MainActivity')
+                                <!-- Edit modal -->
+                                @include('utils.MainActivity')
                             </td>
                         </tr>
                         @endforeach
@@ -113,7 +131,7 @@
                     </div>
                     <div class="mt-2">
                         <label>Image</label>
-                        <input type="file" name="activityImage" id="activityImage" class="form-control" onchange="previewImage(event)" required>
+                        <input type="file" name="activityImage" id="activityImage" class="form-control" onchange="previewImage(event, 'imagePreview')" required>
                     </div>
                     <div class="mt-2">
                         <label>Date</label>
@@ -131,7 +149,7 @@
 </div>
 
 <script>
-    function previewImage(event, $id) {
+    function previewImage(event) {
         var input = event.target;
         if (input.files && input.files[0]) {
             var reader = new FileReader();

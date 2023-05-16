@@ -1,13 +1,14 @@
 <div class="modal fade" id="editModal{{$data->activity->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="add_activity" enctype="multipart/form-data" method="post" action="{{url('/admin/edit-meal', $data->activity->id)}}">
+            <form id="add_activity" enctype="multipart/form-data" method="post" action="{{url('users-activity-edit-global', $data->activity->id)}}">
             {{ csrf_field() }}
                 <div class="modal-body">
                     <h4>Edit Activity</h4>
                     <div class="mt-2">
                         <label>Title</label>
                         <input type="text" name="activityTitle" id="activityTitle" class="form-control" value="{{ $data->activity->title }}">
+                        <input type="hidden" name="user_id" id="user_id" value="{{$user_id['user_id']}}" class="form-control" required>
                     </div>
                     <div class="mt-2">
                         <label>Description</label>
@@ -19,7 +20,8 @@
                     </div>
                     <div class="mt-2">
                         <label>Image</label>
-                        <input type="file" name="activityImage" id="activityImage" class="form-control" value="{{ $data->activity->image }}" ">
+                        <input type="file" name="activityImage" id="activityImage" class="form-control" value="">
+                        <input type="hidden" name="activityImageOld" id="activityImageOld" class="form-control" value="{{ $data->activity->image }}">
                     </div>
                     <div class="mt-2">
                         <label>Date</label>
