@@ -124,4 +124,11 @@ class ActivityController extends Controller
             return response()->json(['success' => false], 500);
         }
     }
+
+
+    //get activities for users by dates differences
+    public function getActivities()
+    {
+       echo 'here';
+    }
 }

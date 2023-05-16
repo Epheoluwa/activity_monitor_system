@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
@@ -23,4 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [RegisterController::class, 'RegisterUser']);
 Route::post('loginUser', [LoginController::class, 'LoginUser']);
 
-
+Route::middleware(['auth.bearer'])->group(function () {
+    Route::get('/activities', [ActivityController::class, 'getActivities']);
+});
