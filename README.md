@@ -1,14 +1,4 @@
 
-## Cypress Task
-
-
-[Click here to view the live version](https://zipagro.a10staffing.com/).
-
-Super User Login Details
-
-Email: admin@admin.com
-Password: 12345678
-
 ## Adding a New Activity
 
 - Click on a day in the calendar that has not reached the maximum number of activities for that day.
