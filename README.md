@@ -1,3 +1,6 @@
+##  Access the admin panel
+Email: admin@admin.com
+Password: 12345678
 
 ## Adding a New Activity
 
